@@ -2,25 +2,6 @@
 #include <time.h>
 #include "tsp.h"
 
-int graph[4][4]={
-	{100,20,42,35},
-	{20,100,30,34},
-	{42,30,100,12},
-	{35,34,12,100}	
-};
-
-int minimum=1000;
-
-int find_length( const char * s)
-{
-	int i=0,l=0;
-	while(s[i+1]!='\0')
-	{
-		l=l+graph[s[i]-'0'][s[i+1]-'0'];
-		i++;
-	}	
-	return l;
-}
 
 
 void main(int argc, char const *argv[])

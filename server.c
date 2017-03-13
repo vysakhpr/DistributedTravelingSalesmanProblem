@@ -4,6 +4,7 @@
 #include "tsp.h"
 #include "tspserver.h"
 
+
 int graph[10][10]={
 	{1000,5,6,1000,1000,1000,1000,7,3,1},
 	{5,1000,1,9,7,1000,1000,1000,1000,7},
@@ -18,6 +19,7 @@ int graph[10][10]={
 };
 
 int no_of_cities=10;
+
 
 // int graph[4][4]={
 // 	{1000,20,42,35},
@@ -42,26 +44,6 @@ int find_length( const char * s)
 	return l;
 }
 
-int handoutwork(char * node)
-{
-	CLIENT *clnt;
-	int *result;
-	char*server="127.0.0.1";
-	clnt=clnt_create(server,SERVERPROG,SERVERVERS,"tcp");
-	if (clnt == (CLIENT *)NULL) 
-	{
-		clnt_pcreateerror(server);
-		exit(1);
-	}
-	result=servtraverse_1(&node,clnt);
-	if (result == (int *)NULL) {
-		clnt_perror(clnt, server);
-		exit(1);
-	}
-	printf("Message delivered to %s with returned value %d\n",server,*result);
-	clnt_destroy( clnt );
-	return *result;
-}
 
 void traverse(char *node, int depth, int length)
 {
@@ -78,9 +60,7 @@ void traverse(char *node, int depth, int length)
 		}
 		else if(depth==0)
 		{
-			rpcreturn=handoutwork(node);
-			if(rpcreturn<minimum)
-				minimum=rpcreturn;
+			printf("NO MORE SUBCONTRACTORS\n");
 		}
 		else
 		{	
@@ -113,13 +93,13 @@ void traverse(char *node, int depth, int length)
 }
 
 
-int* traverse_1_svc(char **node, struct svc_req *req)
+int* servtraverse_1_svc(char **node, struct svc_req *req)
 {
 	static int result;
 	int length;
 	minimum=1000;
 	length=find_length(*node);
-	traverse(*node,no_of_cities/2,length);
+	traverse(*node,no_of_cities,length);
 
 	result = minimum;
 	return (&result);
